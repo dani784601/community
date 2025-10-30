@@ -7,6 +7,12 @@ const COLORS = {
   ORANGE_100: "#FFF7F1",
   RED_500: "#FF5F5F",
   RED_100: "#FFDFDF",
+  GRAY_700: "#374151",
+  GRAY_600: "#4B5563",
+  GRAY_500: "#6B7280",
+  GRAY_300: "#C4C4C4",
+  GRAY_200: "#E2E8F0",
+  GRAY_100: "#F6F6F6",
 };
 
 export { COLORS };
