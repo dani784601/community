@@ -3,11 +3,18 @@ import { type Post } from "@/types";
 import { Ionicons, MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import Profile from "./Profile";
 
 export default function FeedItem({ post }: { post: Post }) {
   const isLiked = false;
   return (
     <View style={styles.container}>
+      <Profile
+        onPress={() => {}}
+        nickname={post.author.nickname}
+        createdAt={post.createdAt}
+        imageUri={post.author.imageUri}
+      />
       <View style={styles.contentContainer}>
         <Text style={styles.title}>{post.title}</Text>
         <Text numberOfLines={3} style={styles.description}>
