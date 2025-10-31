@@ -1,56 +1,41 @@
+import EmailInput from "@/components/EmailInput";
 import FixedBottomCTA from "@/components/FixedBottomCTA";
-import InputField from "@/components/InputField";
-import { useState } from "react";
+import PasswordConfirmInput from "@/components/PasswordConfirmInput";
+import PasswordInput from "@/components/PasswordInput";
+import { FormProvider, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 
+type FormValues = {
+  email: string;
+  password: string;
+  passwordConfirm: string;
+};
+
 export default function SignupScreen() {
-  const [signupData, setSignupData] = useState({
-    email: "",
-    password: "",
-    passwordConfirm: "",
-  });
-  const [error, setError] = useState({
-    email: "",
-    password: "",
-    passwordConfirm: "",
+  const signupForm = useForm<FormValues>({
+    defaultValues: {
+      email: "",
+      password: "",
+      passwordConfirm: "",
+    },
   });
 
-  const handleSubmit = () => {
-    if (signupData.email.length === 0) {
-      setError({ ...error, email: "이메일을 입력해주세요" });
-    }
-    console.log(signupData);
-  };
-
-  const handleChangeText = (name: string, text: string) => {
-    setSignupData({ ...signupData, [name]: text });
+  const onSubmit = (formValues: FormValues) => {
+    console.log(formValues);
   };
 
   return (
-    <>
+    <FormProvider {...signupForm}>
       <View style={styles.container}>
-        <InputField
-          value={signupData.email}
-          onChangeText={(text) => handleChangeText("email", text)}
-          label="이메일"
-          placeholder="이메일을 입력해주세요"
-          error={error.email}
-        />
-        <InputField
-          value={signupData.password}
-          onChangeText={(text) => handleChangeText("password", text)}
-          label="비밀번호"
-          placeholder="비밀번호를 입력해주세요"
-        />
-        <InputField
-          value={signupData.passwordConfirm}
-          onChangeText={(text) => handleChangeText("passwordConfirm", text)}
-          label="비밀번호 확인"
-          placeholder="비밀번호를 입력해주세요"
-        />
+        <EmailInput />
+        <PasswordInput />
+        <PasswordConfirmInput />
       </View>
-      <FixedBottomCTA label="회원가입하기" onPress={handleSubmit} />
-    </>
+      <FixedBottomCTA
+        label="회원가입하기"
+        onPress={signupForm.handleSubmit(onSubmit)}
+      />
+    </FormProvider>
   );
 }
 
