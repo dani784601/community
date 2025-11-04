@@ -48,5 +48,16 @@ export default function useAuth() {
   const { data } = useGetMe();
   const loginMutation = useLogin();
   const signupMutation = useSignup();
-  return { auth: { id: data?.id || "" }, loginMutation, signupMutation };
+
+  const logout = () => {
+    removeHeader("Authorization");
+    removeSecureStore("accessToken");
+    queryClient.resetQueries({ queryKey: ["auth"] });
+  };
+  return {
+    auth: { id: data?.id || "" },
+    loginMutation,
+    signupMutation,
+    logout,
+  };
 }
