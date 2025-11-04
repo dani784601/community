@@ -1,8 +1,9 @@
-import CustomButton from "@/components/CustomButton";
 import FeedList from "@/components/FeedList";
 import { COLORS } from "@/constants";
+import useAuth from "@/hooks/queries/useAuth";
+import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { StyleSheet } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const dummyData = [
@@ -63,15 +64,18 @@ const dummyData = [
 ];
 
 export default function HomeScreen() {
+  const { auth } = useAuth();
   return (
     <SafeAreaView style={styles.container}>
       <FeedList data={dummyData} />
-      <CustomButton
-        label="Button"
-        onPress={() => {
-          router.push("/auth");
-        }}
-      />
+      {auth.id && (
+        <Pressable
+          style={styles.writeButton}
+          onPress={() => router.push("/post/write")}
+        >
+          <Ionicons name="pencil" size={32} color="white" />
+        </Pressable>
+      )}
     </SafeAreaView>
   );
 }
@@ -85,5 +89,21 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     backgroundColor: COLORS.GRAY_200,
     gap: 12,
+  },
+  writeButton: {
+    position: "absolute",
+    bottom: 16,
+    right: 16,
+    backgroundColor: COLORS.ORANGE_600,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: COLORS.BLACK,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 2,
   },
 });
