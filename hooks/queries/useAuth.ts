@@ -1,5 +1,6 @@
 import { getMe, postLogin, postSignup } from "@/api/auth";
 import { queryClient } from "@/api/queryClient";
+import { queryKeys } from "@/constants";
 import { removeHeader, setHeader } from "@/utils/header";
 import {
   getSecureStore,
@@ -17,7 +18,7 @@ function useLogin() {
       if (!accessToken) return;
       setHeader("Authorization", `Bearer ${accessToken}`);
       await saveSecureStore("accessToken", accessToken);
-      queryClient.fetchQuery({ queryKey: ["auth", "getMe"] });
+      queryClient.fetchQuery({ queryKey: [queryKeys.AUTH, queryKeys.GET_ME] });
       router.replace("/");
     },
     onError: () => {},
@@ -35,7 +36,7 @@ function useSignup() {
 function useGetMe() {
   const { data, isError, isSuccess } = useQuery({
     queryFn: getMe,
-    queryKey: ["auth", "getMe"],
+    queryKey: [queryKeys.AUTH, queryKeys.GET_ME],
   });
 
   useEffect(() => {
@@ -65,7 +66,7 @@ export default function useAuth() {
   const logout = () => {
     removeHeader("Authorization");
     removeSecureStore("accessToken");
-    queryClient.resetQueries({ queryKey: ["auth"] });
+    queryClient.resetQueries({ queryKey: [queryKeys.AUTH] });
   };
   return {
     auth: { id: data?.id || "" },
